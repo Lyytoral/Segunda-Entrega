@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Raves_SCL</title>
+
+
+    <!--
+    color aquí 
+    los metadatos 
+    que puedan generar 
+    con https://megatags.co/
+    -->
+    
+    <!-- COMMON TAGS -->
+
+<!-- Search Engine -->
+<meta name="description" content="Visualizacion de datos respecto a la realización de Raves en Santiago">
+<!-- Schema.org for Google -->
+<meta itemprop="name" content="Raves_SCL">
+<meta itemprop="description" content="Visualizacion de datos respecto a la realización de Raves en Santiago">
+<!-- Open Graph general (Facebook, Pinterest & Google+) -->
+<meta name="og:title" content="Raves_SCL">
+<meta name="og:description" content="Visualizacion de datos respecto a la realización de Raves en Santiago">
+<meta name="og:type" content="website">
+
+    <!-- Vamos a buscar el CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!--Vamos a buscar el CSS de Font Awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!-- Vamos por nuestro CSS, basado en https://startbootstrap.com/template-overviews/grayscale/ -->
+    <link href="style.css" rel="stylesheet">
+    <!-- Aquí vamos por el estilo y script del mapa-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+</head>
+
+<body id="page-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top"><span class="titular"></span></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#dataviz">Visualizaciones</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Este encabezado viene de https://startbootstrap.com/snippets/video-header/ -->
+    <header>
+        <div class="overlay"></div>
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+            <!--Favor revisar https://www.w3schools.com/html/html5_video.asp-->
+            <source src="media/Night%20Life%20Party.mp4" type="video/mp4">
+        </video>
+        <div class="container h-100">
+            <div class="d-flex text-center h-100">
+                <div class="my-auto w-100 text-white">
+                    <h1 class="display-3 titular"></h1>
+                    <h2>Fiestas electrónicas clandestinas en Santiago durante el 2018</h2>
+                    <p class="pt-3"><a href="#about"><i class="fas fa-3x fa-arrow-alt-circle-down"></i></i></a></p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- About Section -->
+    <section id="about" class="about-section text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-white mb-4">Raves en Santiago</h2>
+                    
+                    <p class="text-white-50">Las raves son fiestas clandestinas de música electrónica en donde el baile la música y las luces generan un espacio de liberacion y conexion al margen de los circuitos recreativos comerciales; son organizadas por los propios asistentes, de larga duración y se celebran en lugares ocultos o de difícil acceso.
+                    <br /><cite><a href="https://scielo.conicyt.cl/scielo.php?script=sci_arttext&pid=S0718-52002016000100007">Julio Lara Figueroa, 2018</a></cite></p>
+                </div>
+            </div>
+            <img src="media/pioneer.png" class="img-fluid" alt="">
+        </div>
+    </section>
+
+    <!-- dataviz Section -->
+    <section id="dataviz" class="dataviz-section bg-fondo">
+        <div class="container">
+
+            <!-- MAPA -->
+            <div class="row align-items-center no-gutters mb-4 mb-lg-5">
+                <div class="col-xl-8 col-lg-7">
+                    <div id="leaflet"></div>
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                    <div class="featured-text text-center text-lg-left">
+                        <h4>Spots</h4>
+                        <p class="text-white-50 mb-0">En Santiago existen al rededor de 29 Spots licitos e ilicitos de realización de <a href="https://es.wikipedia.org/wiki/Rave" target="_blank"> RAVES</a>, estos se encuentran principalmente el las comunas de Santiago Centro, Recoleta y Providencia</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRIMER GRÁFICO -->
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                <div class="col-lg-6">
+                    <svg id="chart-1"></svg>
+                </div>
+                <div class="col-lg-6">
+                    <div class="bg-black text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-left">
+                                <h4 class="text-white">Las Fiestas</h4>
+                                <p class="mb-0 text-white-50"> Actualmente existe un circuito de al rededor de 23 fiestas distintas catalogables por sus características como raves, ya que se desarrollan en lugares ocultos y sin autorizacion en donde Djs principalmente nacionales convergen para tocar hasta altas horas de la madrugada <br>
+                                Dentro del circuíto los eventos mas destacados durante este año fueron
+                                    
+        <a href="https://www.instagram.com/dj.erika/?hl=es-la" target="_blank">Colmena, Noctámbula y Ecliose Lunar</a> que se realizaron en mayor cantidad y convocando a mayor numero de Djs posicionándose dentro de la escena nacional 
+                                </p>
+                                <hr class="d-none d-lg-block mb-0 ml-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEGUNDO GRÁFICO -->
+            <div class="row justify-content-center no-gutters">
+                <div class="col-lg-6">
+                    <svg id="chart-2"></svg>
+                </div>
+                <div class="col-lg-6 order-lg-first">
+                    <div class="bg-black text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-right">
+                                <h4 class="text-white">Djs</h4>
+                                <p class="mb-0 text-white-50">Existen al rededor de una decena de Djs relacionados a este tipo de manifestaciones, estos se organizan dentro de diversas agrupaciones, la mas importantes en relación a eventos y Djs que la conforman son AwayTeam, Panal Records, Discos Pato Carlos, Club Sauna y Low-fi</p>
+                                <hr class="d-none d-lg-block mb-0 mr-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black small text-center text-white-50">
+        <div class="container">
+            <p><span class="titular"></span> fue desarrollado por Julio Figueroa para Multimedia II</p>
+            <p>Segundo semestre, 2018 · Diseño Gráfico</p>
+            <p>Universidad de Chile</p>
+            <p><a href="#page-top"><i class="fas fa-arrow-alt-circle-up"></i></a></p>
+        </div>
+    </footer>
+
+    <!-- Vamos a buscar algo de JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!--ahora aprovechamos que Bootstrap necesita jQuery, para manipular el DOM-->
+    <script>
+        (function($) {
+            "use strict"; // Start of use strict
+
+            $(".titular").text("Raves_SCL");
+        })(jQuery); // End of use strict
+    </script>
+
+    <!--el tema de bootstrap que usamos necesita este script para funcionar-->
+    <script src="js/theme.js"></script>
+
+    <!--acá comienzan las visualizaciones-->
+
+    <!--primero el mapa-->
+
+    <script>
+        var mymap = L.map('leaflet').setView([-33.44463, -70.63989], 13);
+
+        var georeferencias = [
+        {
+            lugar: "Pqe Los Reyes",
+            coordenadas: [-33.4263, -70.67465]   
+        }, {
+            lugar: "Tocornal 378",
+            coordenadas: [-33.44799, -70.64064]
+        }, {
+            lugar: "Portugal 645",
+            coordenadas: [-33.45035, -70.63497]
+        }, {
+            lugar: "Av. Manuel Montt 1466",
+            coordenadas: [-33.44121, -70.6151]
+        }, {
+            lugar: "Antonia Lopéz de Bello 93",
+            coordenadas: [-33.43197, -70.63822]
+        }, {
+            lugar: "Merced 142",
+            coordenadas: [-33.43692, -70.6376]
+        }, {
+            lugar: "Estado 215",
+            coordenadas: [-33.44049, -70.6493]
+        }, {
+            lugar: "Rafael Sotomayor 405",
+            coordenadas: [-33.4404, -70.67328]
+        }, {
+            lugar: "Monjitas 654",
+            coordenadas: [-33.43694, -70.64655]
+        }, {
+            lugar: "Tocornal 1380",
+            coordenadas: [-33.46184, -70.63699]
+        }, {
+            lugar: "Antonia Lopés de Bello 90",
+            coordenadas: [-33.43194, -70.63517]
+        }, {
+            lugar: "Padre Orellana 1256",
+            coordenadas: [-33.45869, -70.63192]
+        }, {
+            lugar: "San Diego 1455",
+            coordenadas: [-33.46503, -70.64905]
+        }, {
+            lugar: "Bombero Núñez 359",
+            coordenadas: [-33.42991, -70.63877]
+        }, {
+            lugar: "Lira 1587",
+            coordenadas: [-33.46541, -70.63411]
+        }, {
+            lugar: "Lira 1847",
+            coordenadas: [-33.4688, -70.63322]
+        }, {
+            lugar: "Ernesto Pinto Lagarrigue 90",
+            coordenadas: [-33.43363, -70.63736]
+        }, {
+            lugar: "Ernesto Pinto Lagarrigue 154",
+            coordenadas: [-33.43279, -70.63724]
+        }, {
+            lugar: "Cueto 97",
+            coordenadas: [-33.44474, -70.67195]
+        }, {
+            lugar: "Arturo Prat 327",
+            coordenadas: [-33.44941, -70.64946]
+        }, {
+            lugar: "Catedral 2116",
+            coordenadas: [-33.43897, -70.66619]
+        }, {
+            lugar: "Av. Manuel Antonio Matta 310",
+            coordenadas: [-33.45653, -70.63358]
+        }, {
+            lugar: "Buenos Aires 207",
+            coordenadas: [-33.42828, -70.640519]
+        }, {
+            lugar: "Carmen 799",
+            coordenadas: [-33.45372, -70.64067]
+        }, {
+            lugar: "Echaurren 40",
+            coordenadas: [-33.44868, -70.66644]
+        }, {
+            lugar: "Erasmo Escala 2185",
+            coordenadas: [-33.44486, -70.666]
+        }, {
+            lugar: "Ernesto Pinto Lagarrigue 282",
+            coordenadas: [-33.43088, -70.63723]
+        }, {
+            lugar: "Salvador c/ ColoColo",
+            coordenadas: [-33.45143, -70.62107]
+        }, {
+            lugar: "Sta Isabel c/ Emilio Vaisse",
+            coordenadas: [-33.44664, -70.62752]
+        }, {
+            lugar: "Bellavista 427",
+            coordenadas: [-33.43264, -70.64555]
+        }
+        ];
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 18,
+            id: 'mapbox.streets'
+        }).addTo(mymap);
+
+        for (var x = 0; x < georeferencias.length; x++) {
+            lat = georeferencias[x].coordenadas[0];
+            lon = georeferencias[x].coordenadas[1];
+
+        L.marker([lat, lon]).addTo(mymap).bindPopup(georeferencias[x].lugar);
+
+            console.log(lat + "," + lon);
+        }
+    </script>
+
+    <!--luego voy a buscar una biblioteca que Data Driven Documents (DDD = d3)-->
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <!--esto es para un gráfico -->
+
+    <script>
+
+        var Eventos = [
+        {evento:"Acid", cantidad: 1 },
+        {evento:"Antimateria", cantidad: 1 },
+        {evento:"Arde", cantidad:5},
+        {evento:"Baila Como Quieras", cantidad:1},
+        {evento:"Colmena", cantidad:10},
+        {evento:"Coraje", cantidad:2},
+        {evento:"Cromo", cantidad:1},
+        {evento:"CyberiaXY", cantidad:1},
+        {evento:"Eclipse Lunar", cantidad:7},
+        {evento:"El Ruido nos Delata", cantidad:3},
+        {evento:"Futuro", cantidad:3},
+        {evento:"Mk Ultra", cantidad:1},
+        {evento:"Modelle", cantidad:1},
+        {evento:"Noctámbula", cantidad:8}, 
+        {evento:"Penthouse", cantidad:1},
+        {evento:"Pioneer", cantidad:1}, 
+        {evento:"Playa Mental", cantidad:1}, 
+        {evento:"PoolParty", cantidad:2},
+        {evento:"Purga", cantidad:1}, 
+        {evento:"Random Mutations", cantidad:3},
+        {evento:"Singular", cantidad:1}, 
+        {evento:"Solaris", cantidad:3}, 
+        {evento:"Soulseek", cantidad:2},
+        
+        ];
+
+        var coso = d3.select("#chart-1").attr("width", "100%").attr("height", "1000").style("background", "RGBA(0, 0, 0, 1.00)");
+
+        coso.selectAll("rect").data(Eventos).enter().append("rect").attr("x",40).attr("y", function(d, i) { return (i + 1) * 40; }).attr("width", function(d) { return d.cantidad*20 }).attr("height",30).attr("fill","RGBA(57, 255, 20, 1.00)")
+
+         coso.selectAll("text").data(Eventos).enter().append("text").text(function(d) {return (d.evento)}).attr("text-anchor", "start").attr("x", function(d, i) { return (d.cantidad*20)+50 }).attr("y", function(d, i) { return ((i + 1) * 40)+20 }).attr("font-family", "sans-serif").attr("font-size", "12px").attr("fill", "white"); 
+
+    </script>
+
+    <!--esto es para otro gráfico -->
+
+    <script>
+        var aqui = d3.select("#chart-2").attr("width", "100%").attr("height", "400").style("background", "green");
+        aqui.append("circle").attr("cx",100).attr("cy",100).attr("r",50).attr("fill","#da14ff");
+       aqui.append("circle").attr("cx",200).attr("cy",100).attr("r",30).attr("fill","#b700d9");
+       aqui.append("circle").attr("cx",300).attr("cy",100).attr("r",30).attr("fill","#9600b2");
+        aqui.append("circle").attr("cx",400).attr("cy",100).attr("r",30).attr("fill","#76008c");
+        
+    </script>
+
+
+
+
+
+</body>
+
+</html>
